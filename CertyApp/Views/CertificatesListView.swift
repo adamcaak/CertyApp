@@ -21,7 +21,7 @@ struct CertificatesListView: View {
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(vm.certificates, id: \.id) { cert in
-                        CertificateRowView(certificate: cert)
+                        CertificatRowView(certificate: cert)
                     }
                     .onDelete(perform: delete)
                 }
@@ -35,7 +35,7 @@ struct CertificatesListView: View {
                 }
             }
             .sheet(isPresented: $showAddSheet) {
-                AddCertificationView { title, platform, date, category in
+                AddCertificatView { title, platform, date, category in
                                         vm.add(title: title, platform: platform, date: date, category: category)
                                         showAddSheet = false
                 }
