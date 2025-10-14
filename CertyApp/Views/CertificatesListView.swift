@@ -17,7 +17,7 @@ struct CertificatesListView: View {
         NavigationView {
             List {
                 if vm.certificates.isEmpty {
-                    Text("Brak certyfikatów — dodaj pierwszy.")
+                    Text("Brak certyfikatów.")
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(vm.certificates, id: \.id) { cert in
