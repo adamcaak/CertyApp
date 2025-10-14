@@ -7,42 +7,43 @@
 
 import Foundation
 import SwiftData
-internal import Combine
+import Combine
 
-class CertificatesViewModel: ObservableObject {
+final class CertificatesViewModel: ObservableObject {
     @Published var certificates: [Certificate] = []
-    var modelContext: ModelContext? //ustawiamy z View - z enviroment
-    
+    var modelContext: ModelContext? // ustawimy z View (z environment)
+
     init() {}
-    
-    //fetch - pobierz wszystkie certyfikaty
+
+    // fetch - pobierz wszystkie certyfikaty
     func fetch() {
         guard let context = modelContext else { return }
         do {
             let query = Query<Certificate>()
-            let result = try context.fetch(query)
-            //fetch zwraca [Certyficates]
+            let results = try context.fetch(query)
+            // fetch zwraca [Certificate]
             DispatchQueue.main.async {
-                self.certificates = result
+                self.certificates = results
             }
         } catch {
-            print("Error", error)
+            print("Fetch error:", error)
         }
     }
-    //add - dodaj nowy certyfikat
+
+    // add - dodaj nowy certyfikat
     func add(title: String, platform: String, date: Date, category: String) {
         guard let context = modelContext else { return }
-        let cert = Certificate(id: UUID(), title: title, platform: platform, date: date, category: category)
+        let cert = Certificate(title: title, platform: platform, date: date, category: category)
         context.insert(cert)
         do {
             try context.save()
             fetch()
         } catch {
-            print("Save Error", error)
+            print("Save error:", error)
         }
     }
-    
-    //delete - usuń certyfikat
+
+    // delete - usuń certyfikat
     func delete(_ certificate: Certificate) {
         guard let context = modelContext else { return }
         context.delete(certificate)
@@ -50,18 +51,17 @@ class CertificatesViewModel: ObservableObject {
             try context.save()
             fetch()
         } catch {
-            print("Delete Error", error)
+            print("Delete error:", error)
         }
     }
-    
-    //seed - przykładowe dane przydatne w preview, na start
+
+    // seed - przykładowe dane (przydatne w preview / na start)
     func seedIfEmpty() {
         guard let context = modelContext else { return }
         let q = Query<Certificate>()
-        if (try? context.fetch(q)).isEmpty == true {
-            add(title: "Cleanroom Architecture", platform: "Udemy", date: Date(), category: "Swift")
-            add(title: "The Swift Programming Language", platform: "Udemy", date: Date(), category: "Swift")
-            add(title: "Networking with Swift", platform: "Udemy", date: Date(), category: "Swift")
+        if (try? context.fetch(q))?.isEmpty ?? true {
+            add(title: "Swift Fundamentals", platform: "Udemy", date: Date(), category: "Swift")
+            add(title: "iOS Basics", platform: "Coursera", date: Date().addingTimeInterval(-60*60*24*90), category: "iOS")
         }
     }
 }

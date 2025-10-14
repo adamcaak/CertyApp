@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct CertyAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CertificatesListView()
+                .modelContainer(for: [Certificate.self])
         }
     }
 }
