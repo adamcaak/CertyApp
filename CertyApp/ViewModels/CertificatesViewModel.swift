@@ -11,39 +11,42 @@ import Combine
 
 final class CertificatesViewModel: ObservableObject {
     @Published var certificates: [Certificate] = []
-    var modelContext: ModelContext? // ustawimy z View (z environment)
+    var modelContext: ModelContext?
 
-    init() {}
+    init(context: ModelContext? = nil) {
+        self.modelContext = context
+    }
 
-    // fetch - pobierz wszystkie certyfikaty
+    // MARK: - Fetch all certificates
     func fetch() {
         guard let context = modelContext else { return }
         do {
-            let query = Query<Certificate>()
-            let results = try context.fetch(query)
-            // fetch zwraca [Certificate]
+            // prosty FetchDescriptor — można dodać sortowanie jeśli chcesz
+            let descriptor = FetchDescriptor<Certificate>()
+            let results = try context.fetch(descriptor)
+            // update UI on main thread
             DispatchQueue.main.async {
                 self.certificates = results
             }
         } catch {
-            print("Fetch error:", error)
+            print("CertificatesViewModel.fetch() error:", error)
         }
     }
 
-    // add - dodaj nowy certyfikat
-    func add(title: String, platform: String, date: Date, category: String) {
+    // MARK: - Add
+    func add(id: UUID, title: String, platform: String, date: Date, category: String) {
         guard let context = modelContext else { return }
-        let cert = Certificate(title: title, platform: platform, date: date, category: category)
+        let cert = Certificate(id: id, title: title, platform: platform, date: date, category: category)
         context.insert(cert)
         do {
             try context.save()
             fetch()
         } catch {
-            print("Save error:", error)
+            print("CertificatesViewModel.add() save error:", error)
         }
     }
 
-    // delete - usuń certyfikat
+    // MARK: - Delete
     func delete(_ certificate: Certificate) {
         guard let context = modelContext else { return }
         context.delete(certificate)
@@ -51,17 +54,23 @@ final class CertificatesViewModel: ObservableObject {
             try context.save()
             fetch()
         } catch {
-            print("Delete error:", error)
+            print("CertificatesViewModel.delete() save error:", error)
         }
     }
 
-    // seed - przykładowe dane (przydatne w preview / na start)
+    // MARK: - Seed (sample data)
     func seedIfEmpty() {
         guard let context = modelContext else { return }
-        let q = Query<Certificate>()
-        if (try? context.fetch(q))?.isEmpty ?? true {
-            add(title: "Swift Fundamentals", platform: "Udemy", date: Date(), category: "Swift")
-            add(title: "iOS Basics", platform: "Coursera", date: Date().addingTimeInterval(-60*60*24*90), category: "iOS")
+        do {
+            let descriptor = FetchDescriptor<Certificate>()
+            let existing = try context.fetch(descriptor)
+            if existing.isEmpty {
+                // używamy add(...) żeby zapisać poprawnie i odświeżyć listę
+                add(id: UUID(), title: "Swift Fundamentals", platform: "Udemy", date: Date(), category: "Swift")
+                add(id: UUID(), title: "iOS Basics", platform: "Coursera", date: Calendar.current.date(byAdding: .day, value: -90, to: Date()) ?? Date(), category: "iOS")
+            }
+        } catch {
+            print("CertificatesViewModel.seedIfEmpty() fetch error:", error)
         }
     }
 }

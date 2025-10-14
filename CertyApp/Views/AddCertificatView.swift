@@ -10,6 +10,7 @@ import SwiftUI
 struct AddCertificatView: View {
     @Environment(\.dismiss) private var dismiss
     
+    @State private var id: String = UUID().uuidString
     @State private var title: String = ""
     @State private var platform: String = ""
     @State private var date: Date = Date()
