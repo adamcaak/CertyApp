@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftData
-import Combine
+internal import Combine
 
 class CertificatesViewModel: ObservableObject {
     @Published var certificates: [Certificate] = []
@@ -32,7 +32,7 @@ class CertificatesViewModel: ObservableObject {
     //add - dodaj nowy certyfikat
     func add(title: String, platform: String, date: Date, category: String) {
         guard let context = modelContext else { return }
-        let cert = Certificate(title: title, platform: platform, date: date, category: category)
+        let cert = Certificate(id: UUID(), title: title, platform: platform, date: date, category: category)
         context.insert(cert)
         do {
             try context.save()
