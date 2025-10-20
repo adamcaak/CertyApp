@@ -15,8 +15,9 @@ struct AddCertificatView: View {
     @State private var platform: String = ""
     @State private var date: Date = Date()
     @State private var category: String = ""
+    @State private var imageData: Data?
     
-    var onSave: (String, String, Date, String) -> Void
+    var onSave: (String, String, Date, String, Data?) -> Void
     
     var body: some View {
         NavigationView {
@@ -27,6 +28,10 @@ struct AddCertificatView: View {
                     DatePicker("Data", selection: $date)
                     TextField("Kategoria", text: $category)
                 }
+                
+                Section(header: Text("Zdjęcie certyfikatu")) {
+                    ImagePicker(selectedImageData: $imageData)
+                }
             }
             .navigationTitle("Dodaj certyfikat")
             .toolbar {
@@ -36,7 +41,7 @@ struct AddCertificatView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Zapisz") {
                         guard !title.isEmpty else { return }
-                        onSave(title, platform, date, category)
+                        onSave(title, platform, date, category, imageData)
                     }
                     .disabled(title.isEmpty)
                 }
