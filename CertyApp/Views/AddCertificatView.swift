@@ -33,6 +33,8 @@ struct AddCertificatView: View {
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color("BackgroundColor"))
             .navigationTitle("Dodaj certyfikat")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -50,6 +52,6 @@ struct AddCertificatView: View {
     }
 }
 
-//#Preview {
-//    AddCertificatView()
-//}
+#Preview {
+    AddCertificatView { _, _, _, _, _ in }
+}

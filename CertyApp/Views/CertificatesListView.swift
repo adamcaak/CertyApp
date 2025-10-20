@@ -26,6 +26,7 @@ struct CertificatesListView: View {
                     .onDelete(perform: delete)
                 }
             }
+            .scrollContentBackground(.hidden)
             .background(Color("BackgroundColor").ignoresSafeArea())
             .navigationTitle("Moje certyfikaty")
             .toolbar {

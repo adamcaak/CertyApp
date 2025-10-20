@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+
 struct ImagePicker: View {
     @Binding var selectedImageData: Data?
     @State private var selectedItem: PhotosPickerItem?
@@ -24,11 +25,11 @@ struct ImagePicker: View {
             } else {
                 VStack {
                     Image(systemName: "photo")
-                        .font(.system(size: 40))
+                        .font(.system(size: 20))
                         .foregroundColor(.gray)
-                    Text("Wybierz zdjęcie")
-                        .font(.footnote)
-                        .foregroundColor(.gray)
+//                    Text("Wybierz zdjęcie")
+//                        .font(.footnote)
+//                        .foregroundColor(.gray)
                 }
                 .frame(width: 40, height: 40)
                 .background(Color.gray.opacity(0.1))
@@ -45,6 +46,8 @@ struct ImagePicker: View {
     }
 }
 
-//#Preview {
-//    ImagePicker(selectedImageData: .init(nil))
-//}
+#Preview {
+    ImagePicker(selectedImageData: .constant(nil))
+        .padding()
+        .background(Color("BackgroundColor"))
+}
