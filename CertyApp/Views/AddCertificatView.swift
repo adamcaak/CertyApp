@@ -27,10 +27,10 @@ struct AddCertificatView: View {
                     TextField("Platform", text: $platform)
                     DatePicker("Data", selection: $date)
                     TextField("Kategoria", text: $category)
-                }
-                
-                Section(header: Text("Zdjęcie certyfikatu")) {
-                    ImagePicker(selectedImageData: $imageData)
+                    HStack {
+                        Text("Miniaturka")
+                        ImagePicker(selectedImageData: $imageData)
+                    }
                 }
             }
             .navigationTitle("Dodaj certyfikat")

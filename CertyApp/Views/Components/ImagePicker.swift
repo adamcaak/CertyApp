@@ -18,7 +18,7 @@ struct ImagePicker: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 100, height: 100)
+                    .frame(width: 40, height: 40)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .shadow(radius: 2)
             } else {
@@ -30,7 +30,7 @@ struct ImagePicker: View {
                         .font(.footnote)
                         .foregroundColor(.gray)
                 }
-                .frame(width: 100, height: 100)
+                .frame(width: 40, height: 40)
                 .background(Color.gray.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
