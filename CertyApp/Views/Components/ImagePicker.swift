@@ -6,13 +6,45 @@
 //
 
 import SwiftUI
-
+import PhotosUI
 struct ImagePicker: View {
+    @Binding var selectedImageData: Data?
+    @State private var selectedItem: PhotosPickerItem?
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+            if let selectedImageData,
+               let uiImage = UIImage(data: selectedImageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 100)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .shadow(radius: 2)
+            } else {
+                VStack {
+                    Image(systemName: "photo")
+                        .font(.system(size: 40))
+                        .foregroundColor(.gray)
+                    Text("Wybierz zdjęcie")
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+                }
+                .frame(width: 100, height: 100)
+                .background(Color.gray.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+        }
+        .onChange(of: selectedItem) { _, newValue in
+            Task {
+                if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                    selectedImageData = data
+                }
+            }
+        }
     }
 }
 
-#Preview {
-    ImagePicker()
-}
+//#Preview {
+//    ImagePicker(selectedImageData: .init(nil))
+//}
