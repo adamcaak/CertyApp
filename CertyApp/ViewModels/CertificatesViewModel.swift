@@ -34,9 +34,9 @@ final class CertificatesViewModel: ObservableObject {
     }
 
     // MARK: - Add
-    func add(id: UUID, title: String, platform: String, date: Date, category: String) {
+    func add(id: UUID, title: String, platform: String, date: Date, category: String, imageData: Data? = nil) {
         guard let context = modelContext else { return }
-        let cert = Certificate(id: id, title: title, platform: platform, date: date, category: category)
+        let cert = Certificate(id: id, title: title, platform: platform, date: date, category: category, imageData: imageData)
         context.insert(cert)
         do {
             try context.save()
