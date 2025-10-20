@@ -35,8 +35,8 @@ struct CertificatesListView: View {
                 }
             }
             .sheet(isPresented: $showAddSheet) {
-                AddCertificatView { title, platform, date, category in
-                    vm.add(id: UUID(), title: title, platform: platform, date: date, category: category)
+                AddCertificatView { title, platform, date, category, imageData in
+                    vm.add(id: UUID(), title: title, platform: platform, date: date, category: category, imageData: imageData)
                     showAddSheet = false
                 }
                 .environment(\.modelContext, modelContext)
