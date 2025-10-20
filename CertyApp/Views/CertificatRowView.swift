@@ -29,8 +29,10 @@ struct CertificatRowView: View {
             VStack(alignment: .leading) {
                 Text(cetificate.title)
                     .font(.headline)
+                    .foregroundColor(Color("TextPrimary"))
                 Text("\(cetificate.platform) • \(formattedDate(cetificate.date))")
                     .font(.subheadline)
+                    .foregroundColor(Color("TextSecondary"))
                     .foregroundStyle(.secondary)
             }
             

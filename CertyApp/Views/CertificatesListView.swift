@@ -26,11 +26,14 @@ struct CertificatesListView: View {
                     .onDelete(perform: delete)
                 }
             }
+            .background(Color("BackgroundColor").ignoresSafeArea())
             .navigationTitle("Moje certyfikaty")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: { showAddSheet = true }) {
                         Image(systemName: "plus")
+                            .foregroundColor(Color("AccentColor"))
+                            .font(.title2)
                     }
                 }
             }
