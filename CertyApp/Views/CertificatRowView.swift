@@ -17,11 +17,11 @@ struct CertificatRowView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 48, height: 48)
+                    .frame(width: 50, height: 50)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             } else {
                 RoundedRectangle(cornerRadius: 8)
-                    .frame(width:48, height: 48)
+                    .frame(width: 50, height: 50)
                     .overlay(Image(systemName: "doc.richtext").font(.title2))
                     .foregroundStyle(.secondary)
             }
